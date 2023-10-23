@@ -31,7 +31,7 @@ class Calculator(tk.Tk):
 
         # display frame
         self.display_frame = tk.Frame(self,
-                                      height=220,
+                                      height=350,
                                       bg=style.BG_OSCURO)
         self.display_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
@@ -66,23 +66,28 @@ class Calculator(tk.Tk):
             i += 1
 
         # clear
-        button = tk.Button(self.button_frame, text='C', **style.BUTTON, command=self.clear)
+        button = tk.Button(self.button_frame, text='C', **
+                           style.BUTTON, command=self.clear)
         button.grid(row=4, column=1, sticky=tk.NSEW, padx=2, pady=2)
 
         # equals
-        button = tk.Button(self.button_frame, text='=', **style.BUTTON, command=self.evaluate)
+        button = tk.Button(self.button_frame, text='=', **
+                           style.BUTTON, command=self.evaluate)
         button.grid(row=4, column=4, sticky=tk.NSEW, padx=2, pady=2)
 
         # percent
-        button = tk.Button(self.button_frame, text='%', **style.BUTTON, command=self.percent)
+        button = tk.Button(self.button_frame, text='%', **
+                           style.BUTTON, command=self.percent)
         button.grid(row=0, column=1, sticky=tk.NSEW, padx=2, pady=2)
 
         # square
-        button = tk.Button(self.button_frame, text='x \u00B2', **style.BUTTON, command=self.square)
+        button = tk.Button(self.button_frame, text='x \u00B2',
+                           **style.BUTTON, command=self.square)
         button.grid(row=0, column=2, sticky=tk.NSEW, padx=2, pady=2)
 
         # sqrt
-        button = tk.Button(self.button_frame, text='\u221A x', **style.BUTTON, command=self.sqrt)
+        button = tk.Button(self.button_frame, text='\u221A x',
+                           **style.BUTTON, command=self.sqrt)
         button.grid(row=0, column=3, sticky=tk.NSEW, padx=2, pady=2)
 
     def display_label(self):
@@ -117,19 +122,27 @@ class Calculator(tk.Tk):
         self.total_label.config(text=expression)
 
     def update_label(self):
-        self.label.config(text=self.current_expression[:11])
+        if len(self.current_expression) < 12:
+            self.label.config(font=('MS Serif', 40, 'bold'))
+            self.label.config(text=self.current_expression)
+        elif len(self.current_expression) < 22:
+            self.label.config(font=('MS Serif', 20))
+            self.label.config(text=self.current_expression)
+        else:
+            self.label.config(font=('MS Serif', 20))
+            self.label.config(text='Cantidad grande')
 
     def clear(self):
         self.current_expression = ""
         self.total_expression = ""
         self.update_total_label()
         self.update_label()
-        
+
     def evaluate(self):
-        self.total_expression +=self.current_expression
+        self.total_expression += self.current_expression
         self.update_total_label()
         try:
-            self.current_expression= str(eval(self.total_expression))
+            self.current_expression = str(eval(self.total_expression))
             self.total_expression = ""
         except Exception:
             self.current_expression = "Error"
@@ -139,11 +152,11 @@ class Calculator(tk.Tk):
     def square(self):
         self.current_expression = str(eval(f'{self.current_expression}**2'))
         self.update_label()
-    
+
     def sqrt(self):
         self.current_expression = str(eval(f'{self.current_expression}**0.5'))
         self.update_label()
-    
+
     def percent(self):
         self.current_expression = str(eval(f'{self.current_expression}/100'))
         self.update_label()
@@ -151,7 +164,9 @@ class Calculator(tk.Tk):
     def bind_keys(self):
         self.bind("<Return>", lambda event: self.evaluate())
         for key in self.digits:
-            self.bind(str(key), lambda event, digit = key: self.add_to_expression(digit))
-        
+            self.bind(str(key), lambda event,
+                      digit=key: self.add_to_expression(digit))
+
         for key in self.operators:
-            self.bind(key, lambda event, operator= key: self.append_operator(operator))
+            self.bind(key, lambda event,
+                      operator=key: self.append_operator(operator))

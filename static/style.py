@@ -11,7 +11,7 @@ COLOR_MAGENTA_OSCURO = "#3b1f98"
 BUTTON = {
     'bg': BG,
     'fg': BLANCO,
-    'activebackground': BG,
+    'activebackground': COLOR_MAGENTA_CLARO,
     'activeforeground': COLOR_GRIS,
     'borderwidth': 0,
     'font': ('MS Sans Serif', 20, 'bold')
